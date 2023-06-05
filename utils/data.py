@@ -58,7 +58,7 @@ def remove_silence(energy_per_frame: torch.Tensor, thresh: float = -10.0):
 
 class ArabDataset(Dataset):
     def __init__(self, txtpath='./data/train_phon.txt',
-                 wavpath='G:/data/arabic-speech-corpus/wav_new',
+                 wavpath='./data/wav_new',
                  cache=True):
         super().__init__()
 
@@ -71,12 +71,12 @@ class ArabDataset(Dataset):
         phoneme_mel_list = []
 
         for line in progbar(lines):
-            fname, phonemes = line.split('" "')
+            fname, phonemes = line.split('|')
             fname, phonemes = fname[1:], phonemes[:-1]
 
             tokens = text.phonemes_to_tokens(phonemes)
             token_ids = text.tokens_to_ids(tokens)
-            fpath = os.path.join(self.wav_path, fname)
+            fpath = os.path.join(self.wav_path, fname.strip())
 
             if self.cache:
                 mel_log = self._get_mel_from_fpath(fpath)

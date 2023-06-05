@@ -9,8 +9,8 @@ from tqdm import tqdm
 # %%
 
 txtpath = './data/train_phon.txt'
-wav_path = 'G:/data/arabic-speech-corpus/wav'
-wav_new_path = 'G:/data/arabic-speech-corpus/wav_new'
+wav_path = './data/wav'
+wav_new_path = './data/wav_new'
 
 # txtpath='./data/test_phon.txt'
 # wav_path='G:/data/arabic-speech-corpus/test set/wav'
@@ -27,9 +27,9 @@ lines = open(txtpath).readlines()
 
 for line in tqdm(lines):
 
-    fname = line.split('" "')[0][:-1]
+    fname = line.split('|')[0]
 
-    fpath = os.path.join(wav_path, fname)
+    fpath = os.path.join(wav_path, fname.strip())
     wave, _ = torchaudio.load(fpath)
 
     wave = resampler(wave)
