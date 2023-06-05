@@ -27,7 +27,7 @@ lines = open(txtpath).readlines()
 
 for line in tqdm(lines):
 
-    fname = line.split('|')[0]
+    fname = line.split('|')[0][:].replace('"','')
 
     fpath = os.path.join(wav_path, fname.strip())
     wave, _ = torchaudio.load(fpath)

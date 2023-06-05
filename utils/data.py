@@ -71,19 +71,25 @@ class ArabDataset(Dataset):
         phoneme_mel_list = []
 
         for line in progbar(lines):
-            fname, phonemes = line.split('|')
-            fname, phonemes = fname[1:], phonemes[:-1]
+          try:
+              fname, phonemes = line.split('|')
+              if len(phonemes) < 7:
+                continue
+              #fname, phonemes = fname[1:], phonemes[:-1]
 
-            tokens = text.phonemes_to_tokens(phonemes)
-            token_ids = text.tokens_to_ids(tokens)
-            fpath = os.path.join(self.wav_path, fname.strip())
+              tokens = text.phonemes_to_tokens(phonemes)
+              token_ids = text.tokens_to_ids(tokens)
+              fpath = os.path.join(self.wav_path, fname.strip())
 
-            if self.cache:
-                mel_log = self._get_mel_from_fpath(fpath)
-                phoneme_mel_list.append(
-                    (torch.LongTensor(token_ids), mel_log))
-            else:
-                phoneme_mel_list.append((torch.LongTensor(token_ids), fpath))
+              if self.cache:
+                  mel_log = self._get_mel_from_fpath(fpath)
+                  phoneme_mel_list.append(
+                      (torch.LongTensor(token_ids), mel_log))
+              else:
+                  phoneme_mel_list.append((torch.LongTensor(token_ids), fpath))
+          except Exception as e:
+              print(e)
+              continue
 
         self.data = phoneme_mel_list
 
