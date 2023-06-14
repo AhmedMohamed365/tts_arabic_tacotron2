@@ -60,7 +60,6 @@ def validate(model, test_loader, writer, device, n_iter):
     return val_loss
 
 
-# def training_loop(model,
                   optimizer,
                   train_loader,
                   test_loader,
