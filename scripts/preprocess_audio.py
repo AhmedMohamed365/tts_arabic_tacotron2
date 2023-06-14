@@ -29,18 +29,18 @@ for line in tqdm(lines):
 
     fname = line.split('|')[0][:].replace('"','')
 
-    fpath = os.path.join(wav_path, fname.strip())
+    fpath = os.path.join(wav_path, fname.strip()).strip()
     wave, _ = torchaudio.load(fpath)
 
-    wave = resampler(wave)
+    # wave = resampler(wave)
 
     wave_ = wave[0].numpy()
     wave_ = wave_ / np.abs(wave_).max() * 0.999
-    wave_ = librosa.effects.trim(
-        wave_, top_db=23, frame_length=1024, hop_length=256)[0]
+    # wave_ = librosa.effects.trim(
+    #     wave_, top_db=23, frame_length=1024, hop_length=256)[0]
     wave_ = np.append(wave_, [0.]*silence_audio_size)
 
-    torchaudio.save(f'{wav_new_path}/{fname}',
+    torchaudio.save(f'{wav_new_path}/{fname}'.strip(),
                     torch.Tensor(wave_).unsqueeze(0), 22_050)
 
 
