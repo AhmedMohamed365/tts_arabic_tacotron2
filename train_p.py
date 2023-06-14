@@ -60,66 +60,6 @@ def validate(model, test_loader, writer, device, n_iter):
     return val_loss
 
 
-                  optimizer,
-                  train_loader,
-                  test_loader,
-                  writer,
-                  device,
-                  config,
-                  n_epoch,
-                  n_iter):
-
-    model.train()
-
-    for epoch in range(n_epoch, config.epochs):
-        print(f"Epoch: {epoch}")
-        for batch in train_loader:
-
-            text_padded, input_lengths, mel_padded, gate_padded, \
-                output_lengths = batch_to_device(batch, device)
-
-            y_pred = model(text_padded, input_lengths,
-                           mel_padded, output_lengths,
-                           torch.zeros_like(output_lengths))
-            mel_out, mel_out_postnet, gate_out, _ = y_pred
-
-            optimizer.zero_grad()
-
-            # LOSS
-            mel_loss = F.mse_loss(mel_out, mel_padded) + \
-                F.mse_loss(mel_out_postnet, mel_padded)
-            gate_loss = F.binary_cross_entropy_with_logits(
-                gate_out, gate_padded)
-            loss = mel_loss + gate_loss
-
-            loss.backward()
-            grad_norm = torch.nn.utils.clip_grad_norm_(
-                model.parameters(), config.grad_clip_thresh)
-            optimizer.step()
-
-            # LOGGING
-            print(f"loss: {loss.item()}, grad_norm: {grad_norm.item()}")
-
-            writer.add_training_data(loss.item(), grad_norm.item(),
-                                     config.learning_rate, n_iter)
-
-            if n_iter % config.n_save_states_iter == 0:
-                save_states(f'states.pth', model, optimizer,
-                            n_iter, epoch, config)
-
-            if n_iter % config.n_save_backup_iter == 0 and n_iter > 0:
-                save_states(f'states_{n_iter}.pth', model,
-                            optimizer, n_iter, epoch, config)
-
-            n_iter += 1
-
-        # VALIDATE
-        val_loss = validate(model, test_loader, writer, device, n_iter)
-        print(f"Validation loss: {val_loss}")
-
-        save_states(f'states_{n_iter}.pth', model,
-                    optimizer, n_iter, epoch, config)
-
 
 def training_loop(model,
                   optimizer,
