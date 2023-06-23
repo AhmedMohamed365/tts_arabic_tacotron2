@@ -1,6 +1,6 @@
 
-restore_model: ''
-#restore_model: ./pretrained/states_2070.pth
+#restore_model: ''
+restore_model: ./pretrained/tacotron2_ar_adv.pth
 # restore_model: ./checkpoints/exp0/states.pth
 
 log_dir: logs/exp1
