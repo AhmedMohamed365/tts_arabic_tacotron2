@@ -179,6 +179,7 @@ def main():
     # resume from existing checkpoint
     n_epoch, n_iter = 0, 0
     if config.restore_model != '':
+        print("loading the checkPoint")
         state_dicts = torch.load(config.restore_model)
         model.load_state_dict(state_dicts['model'])
         if 'optim' in state_dicts:
