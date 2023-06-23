@@ -4,7 +4,7 @@ decoder_max_step: 3000
 
 random_seed: False
 
-batch_size: 64
+batch_size: 32
 learning_rate: 1.0e-4
 weight_decay: 1.0e-5
 grad_clip_thresh: 1.0
