@@ -1,5 +1,5 @@
 # training
-epochs: 500
+epochs: 50
 decoder_max_step: 3000
 
 random_seed: False
