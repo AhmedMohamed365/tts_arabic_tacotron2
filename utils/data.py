@@ -73,7 +73,7 @@ class ArabDataset(Dataset):
         for line in progbar(lines):
           try:
               fname, phonemes = line.split('|')
-              if len(phonemes) < 7:
+              if len(phonemes) < 20:
                 continue
               #fname, phonemes = fname[1:], phonemes[:-1]
 
@@ -88,7 +88,7 @@ class ArabDataset(Dataset):
               else:
                   phoneme_mel_list.append((torch.LongTensor(token_ids), fpath))
           except Exception as e:
-              print(e)
+              print(f'Error : {e}')
               continue
 
         self.data = phoneme_mel_list
