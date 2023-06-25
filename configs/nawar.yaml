@@ -17,5 +17,5 @@ sampler_weights_file: ./data/sampler/sampler_weights
 
 cache_dataset: True
 
-n_save_states_iter: 500
+n_save_states_iter: 700
 n_save_backup_iter: 1000

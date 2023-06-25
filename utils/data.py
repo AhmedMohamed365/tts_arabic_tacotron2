@@ -73,7 +73,7 @@ class ArabDataset(Dataset):
         for line in progbar(lines):
           try:
               fname, phonemes = line.split('|')
-              if len(phonemes) < 20:
+              if len(phonemes) < 7:
                 continue
               #fname, phonemes = fname[1:], phonemes[:-1]
 
